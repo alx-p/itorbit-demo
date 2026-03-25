@@ -1,0 +1,38 @@
+services:
+  postgres:
+    build:
+      context: ./postgres
+      dockerfile: Dockerfile
+    container_name: postgres_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: demo_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./data/postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  mysql:
+    build:
+      context: ./mysql
+      dockerfile: Dockerfile
+    container_name: mysql_db
+    #command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    environment:
+      MYSQL_DATABASE: demo_db
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_USER: mysqluser
+      MYSQL_PASSWORD: password
+      MYSQL_COLLATION: utf8mb4_unicode_ci
+      LANG: ru_RU.UTF-8
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./data/mysql_data:/var/lib/mysql
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  mysql_data:
